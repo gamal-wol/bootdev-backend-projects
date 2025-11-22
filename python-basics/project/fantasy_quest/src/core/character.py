@@ -96,6 +96,8 @@ class Player(Character):
     
     def level_up(self):
         """Increase player level and improve stats"""
+        from src.utils.helpers import display_level_up
+        
         self.level += 1
         self.xp -= self.xp_to_level
         self.xp_to_level = int(self.xp_to_level * 1.5)  # Exponential XP curve
@@ -106,9 +108,10 @@ class Player(Character):
         self.attack += 3
         self.defense += 2
         
-        print(f"\n🎉 Level Up! {self.name} reached level {self.level}!")
+        display_level_up(self)
         print(f"Stats increased: HP +20, ATK +3, DEF +2")
         print(f"HP fully restored!")
+        print()
     
     def gain_gold(self, amount: int):
         """Add gold to player's purse"""

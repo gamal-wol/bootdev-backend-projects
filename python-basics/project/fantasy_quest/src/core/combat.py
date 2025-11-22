@@ -5,6 +5,7 @@ Handles turn-based battles between player and enemies
 
 import random
 from src.utils.helpers import get_user_choice, clear_screen
+from src.utils.ascii_art import get_enemy_sprite, victory_banner, defeat_banner
 
 
 def calculate_damage(attacker, defender) -> int:
@@ -116,9 +117,17 @@ def combat_loop(player, enemy, inventory) -> tuple[bool, dict]:
     Returns:
         Tuple of (player_won, rewards_dict)
     """
-    print(f"\n{'='*50}")
-    print(f"⚔️  A wild {enemy.name} appears!")
-    print(f"{'='*50}")
+    clear_screen()
+    print(f"\n{'='*67}")
+    print(f"                  ⚔️  A wild {enemy.name} appears!  ⚔️")
+    print(f"{'='*67}")
+    
+    # Display enemy sprite
+    sprite = get_enemy_sprite(enemy.name)
+    if sprite:
+        print(sprite)
+    
+    input("\nPress Enter to begin battle...")
     
     fled = False
     
@@ -160,7 +169,11 @@ def combat_loop(player, enemy, inventory) -> tuple[bool, dict]:
         }
         return True, rewards
     else:
-        # Player died
+        # Player died - show defeat banner
+        clear_screen()
+        print(defeat_banner())
+        print(f"\n{player.name} was defeated by the {enemy.name}...")
+        input("\nPress Enter to continue...")
         return False, {}
 
 
@@ -175,9 +188,8 @@ def process_combat_rewards(player, inventory, rewards):
     """
     from src.entities.items import get_item
     
-    print(f"\n{'='*50}")
-    print("🎉 VICTORY!")
-    print(f"{'='*50}")
+    clear_screen()
+    print(victory_banner())
     
     # XP
     print(f"Gained {rewards['xp']} XP!")

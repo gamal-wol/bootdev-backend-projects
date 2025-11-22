@@ -14,6 +14,47 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.0] - 2025-11-22
+
+### Added - ASCII Art Enhancement Update
+- **New Module**: `src/utils/ascii_art.py` containing all ASCII art assets
+  - 8 unique enemy sprites (Slime, Goblin, Skeleton, Orc, Troll, Vampire, Dark Knight, Dragon)
+  - 5 major banner functions (victory, defeat, level up, quest complete, game over)
+  - 2 location headers (shop, rest/inn)
+  - Enhanced game title with large ASCII text
+  - Utility functions for borders and sprite retrieval
+
+### Enhanced
+- **Combat System** (`src/core/combat.py`)
+  - Enemy ASCII sprites now display at combat start
+  - Victory banner replaces plain text after wins
+  - Defeat banner shows when player loses in combat
+  
+- **Display Functions** (`src/utils/helpers.py`)
+  - `display_title()` now uses large stylized ASCII art
+  - `display_game_over()` shows gravestone ASCII art
+  - New `display_level_up()` function for level celebrations
+
+- **Character Progression** (`src/core/character.py`)
+  - Level up now displays celebratory ASCII banner
+  
+- **Game Flow** (`src/main.py`)
+  - Quest completion shows ASCII banner
+  - Shop visit displays decorative header
+  - Inn/rest shows themed ASCII header
+
+### Technical
+- All ASCII art uses 67-character width for consistency
+- Cross-platform terminal compatibility maintained
+- UTF-8 box-drawing characters for borders
+- No external dependencies added
+
+### Documentation
+- Added `docs/ASCII_ART_GUIDE.md` with complete integration guide
+- Created `demo_ascii_art.py` to showcase all ASCII art elements
+
+---
+
 ## [1.1.0] - 2025-11-22
 
 ### Added

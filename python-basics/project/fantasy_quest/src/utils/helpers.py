@@ -52,17 +52,13 @@ def get_user_input(prompt: str, allow_empty: bool = False) -> str:
 def display_title():
     """Display the game title screen"""
     from src import __version__
+    from src.utils.ascii_art import get_game_title
+    
     clear_screen()
-    print("""
-╔═══════════════════════════════════════════════════╗
-║                                                   ║
-║           ⚔️  FANTASY QUEST  ⚔️                  ║
-║                                                   ║
-║         A Text-Based RPG Adventure                ║
-║                                                   ║
-╚═══════════════════════════════════════════════════╝
-    """)
-    print(f"                    v{__version__}\n")
+    print(get_game_title())
+    print(f"{'':^67}")
+    print(f"{'v' + __version__:^67}")
+    print()
 
 
 def display_game_over(player):
@@ -72,14 +68,15 @@ def display_game_over(player):
     Args:
         player: Player character for final stats
     """
-    print(f"\n{'='*50}")
-    print("💀 GAME OVER 💀")
-    print(f"{'='*50}")
+    from src.utils.ascii_art import game_over_art
+    
+    clear_screen()
+    print(game_over_art())
     print(f"\n{player.name} has fallen in battle...")
     print(f"\nFinal Stats:")
     print(f"  Level: {player.level}")
     print(f"  Gold Earned: {player.gold}")
-    print(f"{'='*50}\n")
+    print(f"\n{'='*67}\n")
 
 
 def format_separator(char: str = "=", length: int = 50) -> str:
@@ -94,6 +91,22 @@ def format_separator(char: str = "=", length: int = 50) -> str:
         Separator string
     """
     return char * length
+
+
+def display_level_up(player):
+    """
+    Display level up celebration screen
+    
+    Args:
+        player: Player character who leveled up
+    """
+    from src.utils.ascii_art import level_up_banner
+    
+    print("\n" + level_up_banner())
+    print(f"\n{'Congratulations!':^67}")
+    print(f"{f'{player.name} reached Level {player.level}!':^67}")
+    print(f"\n{'='*67}\n")
+    input("Press Enter to continue...")
 
 
 def pause(message: str = "\nPress Enter to continue..."):

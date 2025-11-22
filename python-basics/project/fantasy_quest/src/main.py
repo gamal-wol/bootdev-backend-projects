@@ -220,9 +220,14 @@ class Game:
     
     def check_quest_completion(self):
         """Check and handle completed quests"""
+        from src.utils.ascii_art import quest_complete_banner
+        
         for quest_id, quest in list(self.quest_log.active_quests.items()):
             if quest.completed and not quest.turned_in:
-                print(f"\n🎉 Quest Ready to Turn In: {quest.name}")
+                clear_screen()
+                print(quest_complete_banner())
+                print(f"\n{'Quest Ready to Turn In!':^67}")
+                print(f"{quest.name:^67}\n")
                 print("Turn in this quest now?")
                 print("1. Yes")
                 print("2. Later")
@@ -247,16 +252,21 @@ class Game:
     
     def rest(self):
         """Rest to restore HP"""
+        from src.utils.ascii_art import rest_header
+        
         clear_screen()
         cost = 20
         
         if self.player.current_health == self.player.max_health:
+            print(rest_header())
             print("\n❌ You're already at full health!")
             pause()
             return
         
-        print(f"\n🏕️  Rest at the inn? (Cost: {cost} gold)")
-        print(f"Current HP: {self.player.current_health}/{self.player.max_health}")
+        print(rest_header())
+        print(f"\nRest at the inn to restore your health")
+        print(f"Cost: {cost} gold")
+        print(f"\nCurrent HP: {self.player.current_health}/{self.player.max_health}")
         print(f"Your Gold: {self.player.gold}")
         print("\n1. Yes")
         print("2. No")
@@ -274,6 +284,8 @@ class Game:
     
     def visit_shop(self):
         """Visit the shop to buy items"""
+        from src.utils.ascii_art import shop_header
+        
         shop_items = {
             "1": ("minor_potion", "Minor Health Potion", 15),
             "2": ("health_potion", "Health Potion", 30),
@@ -284,9 +296,7 @@ class Game:
         
         while True:
             clear_screen()
-            print(f"\n{'='*50}")
-            print("🏪 SHOP")
-            print(f"{'='*50}")
+            print(shop_header())
             print(f"Your Gold: {self.player.gold}")
             print(f"Inventory: {len(self.inventory.items)}/{self.inventory.capacity}")
             print("\nAvailable Items:")
