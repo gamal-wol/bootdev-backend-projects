@@ -6,6 +6,13 @@ for enhanced visual display throughout the game.
 """
 
 # ============================================================================
+# CONFIGURATION
+# ============================================================================
+
+# Set to False to disable ASCII art throughout the game
+ASCII_ART_ENABLED = True
+
+# ============================================================================
 # ENEMY ASCII SPRITES
 # ============================================================================
 
@@ -112,6 +119,9 @@ ENEMY_SPRITES = {
 
 def get_game_title() -> str:
     """Return large ASCII art title for game start"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*20 + "FANTASY QUEST" + "\n" + " "*15 + "A Text-Based RPG Adventure" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -137,6 +147,9 @@ def get_game_title() -> str:
 
 def victory_banner() -> str:
     """Return victory banner for combat wins"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*28 + "VICTORY!" + "\n" + " "*26 + "🎉 🏆 🎉" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -155,6 +168,9 @@ def victory_banner() -> str:
 
 def defeat_banner() -> str:
     """Return defeat banner for combat losses"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*28 + "DEFEAT" + "\n" + " "*26 + "💀 ☠️  💀" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -173,6 +189,9 @@ def defeat_banner() -> str:
 
 def level_up_banner() -> str:
     """Return level up celebration banner"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*27 + "LEVEL UP!" + "\n" + " "*24 + "⭐ ✨ 🌟 ✨ ⭐" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -191,6 +210,9 @@ def level_up_banner() -> str:
 
 def quest_complete_banner() -> str:
     """Return quest completion banner"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*24 + "QUEST COMPLETE!" + "\n" + " "*23 + "📜 🎊 🏅 🎊 📜" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -216,6 +238,9 @@ def quest_complete_banner() -> str:
 
 def game_over_art() -> str:
     """Return game over screen with gravestone"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*26 + "GAME OVER" + "\n" + " "*27 + "R.I.P." + "\n" + " "*25 + "💀 ☠️  💀" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -254,6 +279,9 @@ def game_over_art() -> str:
 
 def shop_header() -> str:
     """Return shop/merchant header"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*28 + "SHOP" + "\n" + " "*21 + "🏪 Welcome, Traveler! 🏪" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -272,6 +300,9 @@ def shop_header() -> str:
 
 def rest_header() -> str:
     """Return rest/inn header"""
+    if not ASCII_ART_ENABLED:
+        return "\n" + "="*67 + "\n" + " "*28 + "REST" + "\n" + " "*24 + "🛏️  The Inn  🛏️" + "\n" + "="*67 + "\n"
+    
     return """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
@@ -319,4 +350,7 @@ def get_enemy_sprite(enemy_name: str) -> str:
     Returns:
         ASCII art sprite, or empty string if not found
     """
+    if not ASCII_ART_ENABLED:
+        return ""
+    
     return ENEMY_SPRITES.get(enemy_name, "")
