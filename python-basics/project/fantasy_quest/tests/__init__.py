@@ -1,0 +1,3 @@
+"""
+Fantasy Quest Test Suite
+"""
