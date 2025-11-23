@@ -69,6 +69,7 @@ bin/
 *.swo
 *~
 *.iml
+.claude/
 
 # OS files
 .DS_Store
