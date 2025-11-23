@@ -20,6 +20,7 @@ from src.utils.helpers import (
     clear_screen, display_title, display_game_over,
     get_user_choice, get_user_input, pause
 )
+from src.utils.ascii_art import get_hero_sprite
 
 
 class Game:
@@ -53,6 +54,12 @@ class Game:
         
         clear_screen()
         print(f"\nWelcome to Fantasy Quest, {self.player.name}!")
+        
+        # Display hero sprite
+        hero_sprite = get_hero_sprite()
+        if hero_sprite:
+            print(hero_sprite)
+        
         print("\nYou awaken in a small village on the edge of a dark forest.")
         print("The villagers speak of monsters threatening the land...")
         print("Your adventure begins now!\n")

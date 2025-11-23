@@ -10,7 +10,37 @@ for enhanced visual display throughout the game.
 # ============================================================================
 
 # Set to False to disable ASCII art throughout the game
-ASCII_ART_ENABLED = True
+ASCII_ART_ENABLED = False
+
+# ============================================================================
+# HERO ASCII SPRITE
+# ============================================================================
+
+HERO_SPRITE = """
+       ##  
+   ##@@##
+ ##@@@@@@
+##@@@@@@@@
+@@@@@@@@@@
+@@@@##@@@@
+@@####@@@@
+####@@####
+@@@@@@@@@@
+@@@@@@@@@@
+@@@@@@@@@@
+@@@@@@@@@@@@
+@@@@    @@@@@@
+@@        @@@@
+@@          @@
+          @@
+          
+    
+    
+##  ##    ##  ##
+@@@@@@    @@@@@@
+@@@@@@    @@@@@@
+  @@@@      @@@@
+"""
 
 # ============================================================================
 # ENEMY ASCII SPRITES
@@ -354,3 +384,16 @@ def get_enemy_sprite(enemy_name: str) -> str:
         return ""
     
     return ENEMY_SPRITES.get(enemy_name, "")
+
+
+def get_hero_sprite() -> str:
+    """
+    Get ASCII sprite for the hero character
+    
+    Returns:
+        ASCII art sprite of the hero, or empty string if ASCII art is disabled
+    """
+    if not ASCII_ART_ENABLED:
+        return ""
+    
+    return HERO_SPRITE

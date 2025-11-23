@@ -100,9 +100,15 @@ def display_level_up(player):
     Args:
         player: Player character who leveled up
     """
-    from src.utils.ascii_art import level_up_banner
+    from src.utils.ascii_art import level_up_banner, get_hero_sprite
     
     print("\n" + level_up_banner())
+    
+    # Display hero sprite
+    hero_sprite = get_hero_sprite()
+    if hero_sprite:
+        print(hero_sprite)
+    
     print(f"\n{'Congratulations!':^67}")
     print(f"{f'{player.name} reached Level {player.level}!':^67}")
     print(f"\n{'='*67}\n")

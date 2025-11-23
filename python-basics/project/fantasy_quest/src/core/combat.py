@@ -5,7 +5,7 @@ Handles turn-based battles between player and enemies
 
 import random
 from src.utils.helpers import get_user_choice, clear_screen
-from src.utils.ascii_art import get_enemy_sprite, victory_banner, defeat_banner
+from src.utils.ascii_art import get_enemy_sprite, get_hero_sprite, victory_banner, defeat_banner
 
 
 def calculate_damage(attacker, defender) -> int:
@@ -122,10 +122,28 @@ def combat_loop(player, enemy, inventory) -> tuple[bool, dict]:
     print(f"                  ⚔️  A wild {enemy.name} appears!  ⚔️")
     print(f"{'='*67}")
     
-    # Display enemy sprite
-    sprite = get_enemy_sprite(enemy.name)
-    if sprite:
-        print(sprite)
+    # Display hero and enemy sprites side by side
+    hero_sprite = get_hero_sprite()
+    enemy_sprite = get_enemy_sprite(enemy.name)
+    
+    if hero_sprite and enemy_sprite:
+        # Split sprites into lines for side-by-side display
+        hero_lines = hero_sprite.strip().split('\n')
+        enemy_lines = enemy_sprite.strip().split('\n')
+        
+        # Pad to same height
+        max_height = max(len(hero_lines), len(enemy_lines))
+        hero_lines += [''] * (max_height - len(hero_lines))
+        enemy_lines += [''] * (max_height - len(enemy_lines))
+        
+        # Display side by side with spacing
+        print()
+        for hero_line, enemy_line in zip(hero_lines, enemy_lines):
+            print(f"  {hero_line:25}     {enemy_line}")
+        print()
+    elif enemy_sprite:
+        # Fallback: just show enemy sprite if hero sprite not available
+        print(enemy_sprite)
     
     input("\nPress Enter to begin battle...")
     
@@ -161,7 +179,16 @@ def combat_loop(player, enemy, inventory) -> tuple[bool, dict]:
     if fled:
         return False, {}
     elif player.is_alive():
-        # Player won
+        # Player won - show victory with hero sprite
+        clear_screen()
+        print(victory_banner())
+        
+        hero_sprite = get_hero_sprite()
+        if hero_sprite:
+            print(hero_sprite)
+        
+        print(f"\n🎉 {player.name} defeated the {enemy.name}! 🎉")
+        
         rewards = {
             "xp": enemy.xp_reward,
             "gold": enemy.gold_reward,

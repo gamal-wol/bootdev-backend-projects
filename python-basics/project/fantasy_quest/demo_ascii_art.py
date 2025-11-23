@@ -6,7 +6,7 @@ Displays all the new ASCII art elements
 from src.utils.ascii_art import (
     get_game_title, victory_banner, defeat_banner, level_up_banner,
     quest_complete_banner, shop_header, rest_header, game_over_art,
-    get_enemy_sprite, ENEMY_SPRITES
+    get_enemy_sprite, get_hero_sprite, ENEMY_SPRITES
 )
 
 def main():
@@ -17,6 +17,13 @@ def main():
     # Title Screen
     input("\nPress Enter to see: TITLE SCREEN...")
     print(get_game_title())
+    
+    # Hero Sprite
+    input("\nPress Enter to see: HERO SPRITE...")
+    print(f"\n{'='*70}")
+    print(f"{'Hero Character':^70}")
+    print('='*70)
+    print(get_hero_sprite())
     
     # Enemy Sprites
     input("\nPress Enter to see: ENEMY SPRITES...")
