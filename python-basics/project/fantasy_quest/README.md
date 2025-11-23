@@ -51,12 +51,18 @@ Fantasy Quest is a terminal-based role-playing game where you create a character
 
 ### Installation & Setup
 
-1. Navigate to the game directory:
+1. Clone the repository (if you haven't already):
 ```bash
-cd bootdev-backend-projects/python-basics/project/fantasy_quest
+git clone https://github.com/gamal-wol/bootdev-backend-projects.git
+cd bootdev-backend-projects
 ```
 
-2. Run the game:
+2. Navigate to the game directory:
+```bash
+cd python-basics/project/fantasy_quest
+```
+
+3. Run the game:
 ```bash
 python run_game.py
 ```
