@@ -1,0 +1,2 @@
+# Fantasy Quest - Production Dependencies
+# Pure Python implementation - no external dependencies required
