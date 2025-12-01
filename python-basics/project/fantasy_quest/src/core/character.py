@@ -143,3 +143,48 @@ class Player(Character):
         stats += f"  Gold: {self.gold}\n"
         stats += f"{'='*40}\n"
         return stats
+
+    def to_dict(self) -> dict:
+        """
+        Serialize player to dictionary for saving
+
+        Returns:
+            Dictionary containing all player data
+        """
+        return {
+            "name": self.name,
+            "level": self.level,
+            "xp": self.xp,
+            "xp_to_level": self.xp_to_level,
+            "current_health": self.current_health,
+            "max_health": self.max_health,
+            "attack": self.attack,
+            "defense": self.defense,
+            "gold": self.gold
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Player':
+        """
+        Deserialize player from dictionary
+
+        Args:
+            data: Dictionary containing player data
+
+        Returns:
+            Player instance with restored stats
+        """
+        # Create player with name
+        player = cls(data["name"])
+
+        # Set all stats from data
+        player.level = data["level"]
+        player.xp = data["xp"]
+        player.xp_to_level = data["xp_to_level"]
+        player.current_health = data["current_health"]
+        player.max_health = data["max_health"]
+        player.attack = data["attack"]
+        player.defense = data["defense"]
+        player.gold = data["gold"]
+
+        return player

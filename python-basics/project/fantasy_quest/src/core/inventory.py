@@ -181,3 +181,114 @@ class Inventory:
     def is_full(self) -> bool:
         """Check if inventory is at capacity"""
         return len(self.items) >= self.capacity
+
+    def get_sellable_items(self) -> list:
+        """
+        Get all items that can be sold (excluding equipped items)
+
+        Returns:
+            List of sellable items
+        """
+        return self.items.copy()
+
+    def sell_item(self, item) -> bool:
+        """
+        Sell an item from inventory
+
+        Args:
+            item: Item to sell
+
+        Returns:
+            True if item sold, False if not found or equipped
+        """
+        # Can't sell equipped items
+        if item == self.equipped_weapon or item == self.equipped_armor:
+            return False
+
+        # Remove from inventory
+        return self.remove_item(item)
+
+    def to_dict(self) -> dict:
+        """
+        Serialize inventory to dictionary for saving
+
+        Returns:
+            Dictionary containing inventory data
+        """
+        from src.entities.items import ITEMS_DATABASE
+
+        def item_to_dict(item):
+            """Convert an item to a serializable dictionary"""
+            # Find the item key in the database
+            for item_key, db_item in ITEMS_DATABASE.items():
+                # Compare by name and type to find matching item
+                if (item.name == db_item.name and
+                    item.item_type == db_item.item_type):
+                    return {
+                        "type": item.item_type,
+                        "item_id": item_key
+                    }
+            return None
+
+        # Serialize items
+        serialized_items = []
+        for item in self.items:
+            item_dict = item_to_dict(item)
+            if item_dict:
+                serialized_items.append(item_dict)
+
+        # Serialize equipped items
+        equipped_weapon_id = None
+        if self.equipped_weapon:
+            weapon_dict = item_to_dict(self.equipped_weapon)
+            if weapon_dict:
+                equipped_weapon_id = weapon_dict["item_id"]
+
+        equipped_armor_id = None
+        if self.equipped_armor:
+            armor_dict = item_to_dict(self.equipped_armor)
+            if armor_dict:
+                equipped_armor_id = armor_dict["item_id"]
+
+        return {
+            "capacity": self.capacity,
+            "items": serialized_items,
+            "equipped_weapon": equipped_weapon_id,
+            "equipped_armor": equipped_armor_id
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'Inventory':
+        """
+        Deserialize inventory from dictionary
+
+        Args:
+            data: Dictionary containing inventory data
+
+        Returns:
+            Inventory instance with restored items
+        """
+        from src.entities.items import get_item
+
+        # Create inventory with capacity
+        inventory = cls(capacity=data["capacity"])
+
+        # Restore items
+        for item_data in data["items"]:
+            item = get_item(item_data["item_id"])
+            if item:
+                inventory.add_item(item)
+
+        # Restore equipped weapon
+        if data.get("equipped_weapon"):
+            weapon = get_item(data["equipped_weapon"])
+            if weapon:
+                inventory.equipped_weapon = weapon
+
+        # Restore equipped armor
+        if data.get("equipped_armor"):
+            armor = get_item(data["equipped_armor"])
+            if armor:
+                inventory.equipped_armor = armor
+
+        return inventory

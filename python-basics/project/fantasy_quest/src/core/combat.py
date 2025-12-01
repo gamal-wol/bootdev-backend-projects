@@ -236,5 +236,8 @@ def process_combat_rewards(player, inventory, rewards):
                     print(f"  📦 {item.name}")
                 else:
                     print(f"  ❌ {item.name} (Inventory full!)")
-    
+
+    # Display updated character stats
+    print(player.get_stats())
+
     input("\nPress Enter to continue...")

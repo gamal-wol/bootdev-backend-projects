@@ -78,35 +78,35 @@ class Quest:
     def turn_in(self, player, inventory) -> str:
         """
         Complete the quest and grant rewards
-        
+
         Args:
             player: Player character
             inventory: Player's inventory
-            
+
         Returns:
             Result message
         """
         if not self.completed:
             return "Quest objectives not complete!"
-        
+
         if self.turned_in:
             return "Quest already turned in!"
-        
+
         from src.entities.items import get_item
-        
+
         self.turned_in = True
         message = f"\n🎉 Quest Complete: {self.name}\n"
-        
+
         # Grant XP
         if self.rewards.get('xp'):
             player.gain_xp(self.rewards['xp'])
             message += f"  Gained {self.rewards['xp']} XP!\n"
-        
+
         # Grant gold
         if self.rewards.get('gold'):
             player.gain_gold(self.rewards['gold'])
             message += f"  Gained {self.rewards['gold']} gold!\n"
-        
+
         # Grant items
         if self.rewards.get('items'):
             message += "  Received items:\n"
@@ -114,8 +114,22 @@ class Quest:
                 item = get_item(item_key)
                 if item and inventory.add_item(item):
                     message += f"    • {item.name}\n"
-        
+
         return message
+
+    def to_dict(self) -> dict:
+        """
+        Serialize quest to dictionary
+
+        Returns:
+            Dictionary containing quest state
+        """
+        return {
+            "quest_id": self.quest_id,
+            "progress": self.progress,
+            "completed": self.completed,
+            "turned_in": self.turned_in
+        }
 
 
 class QuestLog:
@@ -150,7 +164,7 @@ class QuestLog:
         output = f"\n{'='*50}\n"
         output += "  QUEST LOG\n"
         output += f"{'='*50}\n"
-        
+
         if self.active_quests:
             output += "\n[ACTIVE QUESTS]\n"
             for quest in self.active_quests.values():
@@ -158,14 +172,89 @@ class QuestLog:
                 output += "\n"
         else:
             output += "\n[ACTIVE QUESTS]\n  No active quests\n"
-        
+
         if self.completed_quests:
             output += f"\n[COMPLETED QUESTS] ({len(self.completed_quests)})\n"
             for quest in self.completed_quests:
                 output += f"  ✓ {quest.name}\n"
-        
+
         output += f"{'='*50}\n"
         return output
+
+    def to_dict(self) -> dict:
+        """
+        Serialize quest log to dictionary
+
+        Returns:
+            Dictionary containing all quest states
+        """
+        return {
+            "active_quests": [quest.to_dict() for quest in self.active_quests.values()],
+            "completed_quests": [quest.to_dict() for quest in self.completed_quests]
+        }
+
+    @classmethod
+    def from_dict(cls, data: dict) -> 'QuestLog':
+        """
+        Deserialize quest log from dictionary
+
+        Args:
+            data: Dictionary containing quest log state
+
+        Returns:
+            Reconstructed QuestLog instance
+        """
+        quest_log = cls()
+
+        # Restore active quests
+        for quest_data in data.get("active_quests", []):
+            quest_id = quest_data["quest_id"]
+
+            # Get quest template from database
+            if quest_id in QUEST_DATABASE:
+                # Create new quest from template
+                template = QUEST_DATABASE[quest_id]
+                quest = Quest(
+                    quest_id=template.quest_id,
+                    name=template.name,
+                    description=template.description,
+                    objectives=template.objectives,
+                    rewards=template.rewards,
+                    required_level=template.required_level
+                )
+
+                # Restore progress and state
+                quest.progress = quest_data["progress"]
+                quest.completed = quest_data["completed"]
+                quest.turned_in = quest_data["turned_in"]
+
+                quest_log.active_quests[quest_id] = quest
+
+        # Restore completed quests
+        for quest_data in data.get("completed_quests", []):
+            quest_id = quest_data["quest_id"]
+
+            # Get quest template from database
+            if quest_id in QUEST_DATABASE:
+                # Create new quest from template
+                template = QUEST_DATABASE[quest_id]
+                quest = Quest(
+                    quest_id=template.quest_id,
+                    name=template.name,
+                    description=template.description,
+                    objectives=template.objectives,
+                    rewards=template.rewards,
+                    required_level=template.required_level
+                )
+
+                # Restore progress and state
+                quest.progress = quest_data["progress"]
+                quest.completed = quest_data["completed"]
+                quest.turned_in = quest_data["turned_in"]
+
+                quest_log.completed_quests.append(quest)
+
+        return quest_log
 
 
 # Predefined quests
